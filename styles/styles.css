@@ -1,0 +1,105 @@
+body {
+    overflow: hidden;
+}
+
+.wrapper {
+    background-image: url(/assets/home.png);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+.ancients {
+    display: flex;
+    gap: 15px;
+}
+
+.ancient-image {
+    height: 40vh;
+    margin: 0 auto;
+    display: flex;
+}
+
+.ancient-image:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.ancient-image--active {
+    border: 2px solid greenyellow;
+}
+
+.shuffle-button {
+    display: flex;
+    margin: 10px auto;
+}
+
+.counter {
+    min-width: 20vw;
+}
+
+.stage-header {
+    color: white
+}
+
+.counter__stage1,
+.counter__stage2,
+.counter__stage3 {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 15px;
+}
+
+.green,
+.brown,
+.blue {
+    width: 30px;
+    height: 30px;
+    border-radius: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.green {
+    background-color: lightgreen;
+}
+
+.brown {
+    background-color: burlywood;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.deck {
+    height: 35vh;
+    margin-top: 30px;
+}
+
+.deck-container {
+    display: flex;
+    gap: 30px;
+    justify-content: space-around;
+}
+
+.deck-background {
+    height: 30vh;
+    cursor: pointer;
+}
+
+.deck-background:hover {
+    transform: scale(1.05);
+}
+
+
+.opened-cards {
+    height: 45vh;
+    width: 20vw;
+    background-size: cover;
+}
