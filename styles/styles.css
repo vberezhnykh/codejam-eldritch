@@ -1,10 +1,16 @@
+@font-face {
+    font-family: Hellbound;
+    src: url(../assets/fonts/Hellbound.ttf);
+}
+
 body {
     overflow: hidden;
-    font-family: 'Exo 2', sans-serif;
+    /* font-family: 'Exo 2', sans-serif; */
+    font-family: Hellbound, 'Exo 2';
 }
 
 .wrapper {
-    background-image: url(/assets/home.png);
+    background-image: url(/assets/images/background.jpg);
     width: 100%;
     height: 100vh;
     display: flex;
@@ -33,7 +39,7 @@ body {
 }
 
 .ancient-image--active {
-    border: 2px solid greenyellow;
+    border: 10px solid #F11514;
     opacity: 1;
 }
 
@@ -44,47 +50,69 @@ body {
 }
 
 .difficulty-btn {
-    background-color: aquamarine;
+    background-color: transparent;
+    color: white;
     border: none;
     border-radius: 2px;
-    opacity: 0.5;
+    opacity: 0.7;
     cursor: pointer;
+    background-color: black;
+    border-radius: 2px;
 }
 
 .difficulty-btn:hover {
     opacity: 1;
-    transform: scale(1.05);
+    transform: scale(1.5);
+    border-bottom: 5px solid #F11514;
 }
 
 .difficulty-btn--active {
     opacity: 1;
+    border-bottom: 5px solid #F11514;
 }
 
 .shuffle-button {
     display: flex;
     margin: 10px auto;
-    background-color: lightblue;
+    background-color: transparent;
     border: none;
     border-radius: 2px;
     opacity: 0.5;
+    cursor: pointer;
+    color: white;
+    background-color: black;
+    border-radius: 2px;
+}
+
+.shuffle-button:hover {
+    transform: scale(1.5);
+    opacity: 1;
+    border-bottom: 5px solid #F11514;
 }
 
 .shuffle-button--active {
     opacity: 1;
-    cursor: pointer;
+    border-bottom: 5px solid #F11514;
 }
 
 .counter {
     min-width: 20vw;
+    max-height: 30vh;
+    font-family: 'Exo 2';
+    background-color: #28282B;
+    border-radius: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .stage-header {
-    color: white
+    color: white;
+    font-family: Hellbound;
 }
 
 .stage-header--active {
-    background-color: rgb(176, 216, 33);
-    color: black;
+    border-bottom: 5px solid #F11514;
     padding: 0 5px;
 }
 
@@ -93,7 +121,13 @@ body {
 .counter__stage3 {
     display: flex;
     justify-content: space-evenly;
-    margin-top: 15px;
+    opacity: 0.5;
+}
+
+.counter__stage1--active,
+.counter__stage2--active,
+.counter__stage3--active {
+    opacity: 1;
 }
 
 .green,
@@ -131,7 +165,7 @@ body {
 }
 
 .deck-background {
-    height: 30vh;
+    height: 40vh;
     cursor: pointer;
     opacity: 0.5;
 }
@@ -146,7 +180,8 @@ body {
 
 
 .opened-cards {
-    height: 45vh;
-    width: 20vw;
-    background-size: cover;
+    height: 40vh;
+    width: 285px;
+    max-width: 15vw;
+    background-size: contain;
 }

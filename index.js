@@ -1,10 +1,18 @@
-import { ancientsData } from "./ancients/ancients.js";
-import { greenCards } from "./green/green.js";
-import { brownCards } from "./brown/brown.js";
-import { blueCards } from "./blue/blue.js";
+import { ancientsData } from "./data/ancients.js";
+import { greenCards } from "./data/green.js";
+import { brownCards } from "./data/brown.js";
+import { blueCards } from "./data/blue.js";
 
 let activeAncient;
 let difficulty;
+
+/* function playMusic() {
+    const audio = new Audio();
+    audio.src = '../assets/audio/Satanic Music.mp3';
+    audio.play();
+    audio.volume = 0.2;
+}
+window.onload = playMusic(); */
 
 const ancients = document.querySelector('.ancients');
 ancients.onclick = function(event) {
@@ -37,7 +45,6 @@ function chooseAncient(event) {
         event.classList.add('ancient-image--active');
         (activeAncient !== undefined && difficulty !== undefined) ? shuffleBtn.classList.add('shuffle-button--active') : shuffleBtn.classList.remove('shuffle-button--active');
     }
-    /* console.log(activeAncient) */
 }
 
 const difficultyContainer = document.querySelector('.difficulty-container');
@@ -68,7 +75,6 @@ function chooseDifficulty(event) {
         event.classList.add('difficulty-btn--active');
         (activeAncient !== undefined && difficulty !== undefined) ? shuffleBtn.classList.add('shuffle-button--active') : shuffleBtn.classList.remove('shuffle-button--active');
     }
-    /* console.log(difficulty); */
 }
 
 difficultyContainer.onclick = function(event) {
@@ -81,14 +87,6 @@ const unshuffledGreenCards = [...greenCards];
 const unshuffledBrownCards = [...brownCards];
 const unshuffledBlueCards = [...blueCards];
 
-/* function veryEasyShuffle(deck){
-    
-}
-
-function easyShuffle(deck) {
-//to do
-} */
-
 function mediumShuffle(deck) {
     for (let i = deck.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * i);
@@ -97,14 +95,6 @@ function mediumShuffle(deck) {
         deck[j] = temp;
     }
 }
-
-/* function hardShuffle(deck) {
-//to do
-}
-
-function veryHardShuffle(deck) {
-//to do
-} */
 
 let finalDeck = []
 function shuffleAllCards() {
@@ -327,9 +317,12 @@ function shuffleAllCards() {
 
     const stageOneHeader = document.querySelector('.counter__stage1').children[0];
     stageOneHeader.classList.add('stage-header--active');
+    const counter1 = document.querySelector('.counter__stage1');
+    counter1.classList.add('counter__stage1--active');
     deckBg.classList.add('deck-background--active');
     shuffleBtn.classList.remove('shuffle-button--active');
     shuffleBtn.removeEventListener('click', shuffleAllCards);   
+    shuffleBtn.remove();
 }
     
 const shuffleBtn = document.querySelector('.shuffle-button');
@@ -354,6 +347,8 @@ function withdrawCard() {
         } else if (finalDeck[0].length === 0 && finalDeck[1].length > 0) { //проверка длины деки для stage2
             stageOneHeader.classList.contains('stage-header--active') ? stageOneHeader.classList.remove('stage-header--active') : false;
             stageTwoHeader.classList.add('stage-header--active');
+            counter1.classList.remove('counter__stage1--active');
+            counter2.classList.add('counter__stage2--active');
             openedCards.style.backgroundImage = `url(${finalDeck[1][0].url})`;
             finalDeck[1][0].color === 'green' ? counter2.children[1].textContent = Number(counter2.children[1].textContent) - 1 : false;
             finalDeck[1][0].color === 'brown' ? counter2.children[2].textContent = Number(counter2.children[2].textContent) - 1 : false;
@@ -362,6 +357,8 @@ function withdrawCard() {
         } else if (finalDeck[1].length === 0 && finalDeck[2].length > 0) {
             stageTwoHeader.classList.contains('stage-header--active') ? stageTwoHeader.classList.remove('stage-header--active') : false;
             stageThreeHeader.classList.add('stage-header--active');
+            counter2.classList.remove('counter__stage2--active');
+            counter3.classList.add('counter__stage3--active');
             openedCards.style.backgroundImage = `url(${finalDeck[2][0].url})`;
             finalDeck[2][0].color === 'green' ? counter3.children[1].textContent = Number(counter3.children[1].textContent) - 1 : false;
             finalDeck[2][0].color === 'brown' ? counter3.children[2].textContent = Number(counter3.children[2].textContent) - 1 : false;
@@ -370,9 +367,13 @@ function withdrawCard() {
         }
         if (finalDeck[2].length === 0) {
             stageThreeHeader.classList.remove('stage-header--active');
+            counter3.classList.remove('counter__stage3--active');
             deckBg.classList.remove('deck-background--active');
             deckBg.removeEventListener('click', withdrawCard);
-            deckBg.addEventListener('click', () => alert('Restart the page to start again'));
+            deckBg.addEventListener('click', () => {
+                alert('Your page will be reloaded.');
+                location.reload();
+            });
         } 
     } else alert('Shuffle your deck first!');
 }
