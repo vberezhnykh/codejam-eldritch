@@ -1,5 +1,6 @@
 body {
     overflow: hidden;
+    font-family: 'Exo 2', sans-serif;
 }
 
 .wrapper {
@@ -22,20 +23,55 @@ body {
     height: 40vh;
     margin: 0 auto;
     display: flex;
+    opacity: 0.5;
 }
 
 .ancient-image:hover {
     transform: scale(1.05);
     cursor: pointer;
+    opacity: 1;
 }
 
 .ancient-image--active {
     border: 2px solid greenyellow;
+    opacity: 1;
+}
+
+.difficulty-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px auto;
+}
+
+.difficulty-btn {
+    background-color: aquamarine;
+    border: none;
+    border-radius: 2px;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.difficulty-btn:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.difficulty-btn--active {
+    opacity: 1;
 }
 
 .shuffle-button {
     display: flex;
     margin: 10px auto;
+    background-color: lightblue;
+    border: none;
+    border-radius: 2px;
+    opacity: 0.5;
+}
+
+.shuffle-button--active {
+    opacity: 1;
+    cursor: pointer;
 }
 
 .counter {
@@ -44,6 +80,12 @@ body {
 
 .stage-header {
     color: white
+}
+
+.stage-header--active {
+    background-color: rgb(176, 216, 33);
+    color: black;
+    padding: 0 5px;
 }
 
 .counter__stage1,
@@ -91,6 +133,11 @@ body {
 .deck-background {
     height: 30vh;
     cursor: pointer;
+    opacity: 0.5;
+}
+
+.deck-background--active {
+    opacity: 1;
 }
 
 .deck-background:hover {
