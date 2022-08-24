@@ -68,6 +68,7 @@ function chooseDifficulty(event) {
         event.classList.add('difficulty-btn--active');
         (activeAncient !== undefined && difficulty !== undefined) ? shuffleBtn.classList.add('shuffle-button--active') : shuffleBtn.classList.remove('shuffle-button--active');
     }
+    /* console.log(difficulty); */
 }
 
 difficultyContainer.onclick = function(event) {
@@ -75,6 +76,18 @@ difficultyContainer.onclick = function(event) {
     if (!target.classList.contains('difficulty-btn')) return;
     chooseDifficulty(target);
 }
+
+const unshuffledGreenCards = [...greenCards];
+const unshuffledBrownCards = [...brownCards];
+const unshuffledBlueCards = [...blueCards];
+
+/* function veryEasyShuffle(deck){
+    
+}
+
+function easyShuffle(deck) {
+//to do
+} */
 
 function mediumShuffle(deck) {
     for (let i = deck.length - 1; i > 0; i--) {
@@ -84,6 +97,14 @@ function mediumShuffle(deck) {
         deck[j] = temp;
     }
 }
+
+/* function hardShuffle(deck) {
+//to do
+}
+
+function veryHardShuffle(deck) {
+//to do
+} */
 
 let finalDeck = []
 function shuffleAllCards() {
@@ -104,29 +125,88 @@ function shuffleAllCards() {
     let stageTwoDecks = [];
     let stageThreeDecks = [];
 
-    if (difficulty === 'medium') {
-        mediumShuffle(greenCards);
-        mediumShuffle(brownCards);
-        mediumShuffle(blueCards);
-    }
+    let shuffledGreenCards = [];
+    let shuffledBrownCards = [];
+    let shuffledBlueCards = [];
+
     let ancient;
     activeAncient === 'azathoth' ? ancient = azathoth
     : activeAncient === 'cthulhu' ? ancient = cthulhu
     : activeAncient === 'iogSothoth' ? ancient = iogSothoth
     : activeAncient === 'shubNiggurath' ? ancient = shubNiggurath
     : false;
+
+    const requiredGreenCardsNum = ancient.firstStage.greenCards + ancient.secondStage.greenCards + ancient.thirdStage.greenCards;
+    const requiredBrownCarsNum = ancient.firstStage.brownCards + ancient.secondStage.brownCards + ancient.thirdStage.brownCards;
+    const requiredBlueCardsNum = ancient.firstStage.blueCards + ancient.secondStage.blueCards + ancient.thirdStage.blueCards;
+
+    if (difficulty === 'medium') {
+        mediumShuffle(unshuffledGreenCards);
+        mediumShuffle(unshuffledBrownCards);
+        mediumShuffle(unshuffledBlueCards);
+        shuffledGreenCards = [...unshuffledGreenCards];
+        shuffledBrownCards = [...unshuffledBrownCards];
+        shuffledBlueCards = [...unshuffledBlueCards];
+    } else if(difficulty === 'very easy') {
+        //перемешать зеленые карты
+        mediumShuffle(unshuffledGreenCards);
+        for (let i = 0; i < unshuffledGreenCards.length; i++) {
+            unshuffledGreenCards[i].difficulty === 'easy' ? shuffledGreenCards.push(unshuffledGreenCards[i]) : false;
+        }
+        if (shuffledGreenCards.length < requiredGreenCardsNum) { //проверяем хватает ли легких карт или требуется добрать обычных
+            let shortage = requiredGreenCardsNum - shuffledGreenCards.length;
+            for (let i = 0; i < unshuffledGreenCards.length && shortage > 0; i++) {
+                if (unshuffledGreenCards[i].difficulty === 'normal') {
+                    shuffledGreenCards.push(unshuffledGreenCards[i]);
+                    shortage--;
+                } 
+            }
+        }
+       //перемешать коричневые карты;
+       mediumShuffle(unshuffledBrownCards);
+       for (let i = 0; i < unshuffledBrownCards.length; i++) {
+        unshuffledBrownCards[i].difficulty === 'easy' ? shuffledBrownCards.push(unshuffledBrownCards[i]) : false;
+       }
+       if (shuffledBrownCards.length < requiredBrownCarsNum) {
+        let shortage = requiredBrownCarsNum - shuffledBrownCards.length;
+        for (let i = 0; i < unshuffledBrownCards.length && shortage > 0; i++) {
+            if (unshuffledBrownCards[i].difficulty === 'normal') {
+                shuffledBrownCards.push(unshuffledBrownCards[i]);
+                shortage--;
+            }
+        }
+       }
+       // перемешать синие карты
+       mediumShuffle(unshuffledBlueCards);
+       for (let i = 0; i < unshuffledBlueCards.length; i++) {
+        unshuffledBlueCards[i].difficulty === 'easy' ? shuffledBlueCards.push(unshuffledBlueCards[i]) : false;
+       }
+       if (shuffledBlueCards.length < requiredBlueCardsNum) {
+        let shortage = requiredBlueCardsNum - shuffledBlueCards.length;
+        for (let i = 0; i < unshuffledBlueCards.length && shortage > 0; i++) {
+            if (unshuffledBlueCards[i].difficulty === 'normal') {
+                shuffledBlueCards.push(unshuffledBlueCards[i]);
+                shortage--;
+            }
+        }
+       }
+    } else {
+        alert('difficulty yet to come');
+        return;
+    }
+
     //начало первого этапа тасовки
     for (let i = 0; i < ancient.firstStage.greenCards; i++) {
-        stageOneDecks.push(greenCards[0]);
-        greenCards.shift();
+        stageOneDecks.push(shuffledGreenCards[0]);
+        shuffledGreenCards.shift();
     }
     for (let i = 0; i < ancient.firstStage.brownCards; i++) {
-        stageOneDecks.push(brownCards[0]);
-        brownCards.shift();
+        stageOneDecks.push(shuffledBrownCards[0]);
+        shuffledBrownCards.shift();
     }
     for (let i = 0; i < ancient.firstStage.blueCards; i++) {
-        stageOneDecks.push(blueCards[0]);
-        blueCards.shift();
+        stageOneDecks.push(shuffledBlueCards[0]);
+        shuffledBlueCards.shift();
     }
 
     const counter = document.querySelector('.counter');
@@ -141,16 +221,16 @@ function shuffleAllCards() {
     mediumShuffle(stageOneDecks);
     //окончание первого этапа и начало второго этапа
     for (let i = 0; i < ancient.secondStage.greenCards; i++) {
-        stageTwoDecks.push(greenCards[0]);
-        greenCards.shift();
+        stageTwoDecks.push(shuffledGreenCards[0]);
+        shuffledGreenCards.shift();
     }
     for (let i = 0; i < ancient.secondStage.brownCards; i++) {
-        stageTwoDecks.push(brownCards[0]);
-        brownCards.shift();
+        stageTwoDecks.push(shuffledBrownCards[0]);
+        shuffledBrownCards.shift();
     }
     for (let i = 0; i < ancient.secondStage.blueCards; i++) {
-        stageTwoDecks.push(blueCards[0]);
-        blueCards.shift();
+        stageTwoDecks.push(shuffledBlueCards[0]);
+        shuffledBlueCards.shift();
     }
 
     stageTwoCounter.children[1].textContent = ancient.secondStage.greenCards;
@@ -160,16 +240,16 @@ function shuffleAllCards() {
     mediumShuffle(stageTwoDecks);
     //окончание второго этапа и начало третьего этапа
     for (let i = 0; i < ancient.thirdStage.greenCards; i++) {
-        stageThreeDecks.push(greenCards[0]);
-        greenCards.shift();
+        stageThreeDecks.push(shuffledGreenCards[0]);
+        shuffledGreenCards.shift();
     }
     for (let i = 0; i < ancient.thirdStage.brownCards; i++) {
-        stageThreeDecks.push(brownCards[0]);
-        brownCards.shift();
+        stageThreeDecks.push(shuffledBrownCards[0]);
+        shuffledBrownCards.shift();
     }
     for (let i = 0; i < ancient.thirdStage.blueCards; i++) {
-        stageThreeDecks.push(blueCards[0]);
-        blueCards.shift();
+        stageThreeDecks.push(shuffledBlueCards[0]);
+        shuffledBlueCards.shift();
     }
 
     stageThreeCounter.children[1].textContent = ancient.thirdStage.greenCards;
