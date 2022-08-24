@@ -190,6 +190,19 @@ function shuffleAllCards() {
             }
         }
        }
+    } else if (difficulty === 'easy') {
+        mediumShuffle(unshuffledGreenCards);
+        for (let i = 0; i < unshuffledGreenCards.length; i++) {
+            unshuffledGreenCards[i].difficulty !== 'hard' ? shuffledGreenCards.push(unshuffledGreenCards[i]) : false;
+        };
+        mediumShuffle(unshuffledBrownCards);
+        for (let i = 0; i < unshuffledBrownCards.length; i++) {
+            unshuffledBrownCards[i].difficulty !== 'hard' ? shuffledBrownCards.push(unshuffledBrownCards[i]) : false;
+        };
+        mediumShuffle(unshuffledBlueCards);
+        for (let i = 0; i < unshuffledBlueCards.length; i++) {
+            unshuffledBlueCards[i].difficulty !== 'hard' ? shuffledBlueCards.push(unshuffledBlueCards[i]) : false;
+        }
     } else {
         alert('difficulty yet to come');
         return;
