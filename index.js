@@ -216,9 +216,46 @@ function shuffleAllCards() {
         for (let i = 0; i < unshuffledBlueCards.length; i++) {
             unshuffledBlueCards[i].difficulty !== 'easy' ? shuffledBlueCards.push(unshuffledBlueCards[i]) : false;
         }
-    } else {
-        alert('difficulty yet to come');
-        return;
+    } else if (difficulty === 'very hard') {
+       mediumShuffle(unshuffledGreenCards);
+       for (let i = 0; i < unshuffledGreenCards.length; i++) {
+            unshuffledGreenCards[i].difficulty === 'hard' ? shuffledGreenCards.push(unshuffledGreenCards[i]) : false;
+       } 
+       if (shuffledGreenCards.length < requiredGreenCardsNum) { //проверяем хватает ли легких карт или требуется добрать обычных
+            let shortage = requiredGreenCardsNum - shuffledGreenCards.length;
+            for (let i = 0; i < unshuffledGreenCards.length && shortage > 0; i++) {
+                if (unshuffledGreenCards[i].difficulty === 'normal') {
+                    shuffledGreenCards.push(unshuffledGreenCards[i]);
+                    shortage--;
+                } 
+            }
+        }
+        mediumShuffle(unshuffledBlueCards);
+        for (let i = 0; i < unshuffledBrownCards.length; i++) {
+            unshuffledBrownCards[i].difficulty === 'hard' ? shuffledBrownCards.push(unshuffledBrownCards[i]) : false;
+        }
+        if (shuffledBrownCards.length < requiredBrownCarsNum) {
+            let shortage = requiredBrownCarsNum - shuffledBrownCards.length;
+            for (let i = 0; i < unshuffledBrownCards.length && shortage > 0; i++) {
+                if (unshuffledBrownCards[i].difficulty === 'normal') {
+                    shuffledBrownCards.push(unshuffledBrownCards[i]);
+                    shortage--;
+                }
+            }
+        }
+        mediumShuffle(unshuffledBlueCards);
+        for (let i = 0; i < unshuffledBlueCards.length; i++) {
+            unshuffledBlueCards[i].difficulty === 'hard' ? shuffledBlueCards.push(unshuffledBlueCards[i]) : false;
+        }
+        if (shuffledBlueCards.length < requiredBlueCardsNum) {
+            let shortage = requiredBlueCardsNum - shuffledBlueCards.length;
+            for (let i = 0; i < unshuffledBlueCards.length && shortage > 0; i++) {
+                if (unshuffledBlueCards[i].difficulty === 'normal') {
+                    shuffledBlueCards.push(unshuffledBlueCards[i]);
+                    shortage--;
+                }
+            }
+        }
     }
 
     //начало первого этапа тасовки
