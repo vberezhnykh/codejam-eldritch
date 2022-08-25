@@ -87,7 +87,7 @@ const unshuffledGreenCards = [...greenCards];
 const unshuffledBrownCards = [...brownCards];
 const unshuffledBlueCards = [...blueCards];
 
-function mediumShuffle(deck) {
+function shuffle(deck) {
     for (let i = deck.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * i);
         let temp = deck[i];
@@ -99,10 +99,10 @@ function mediumShuffle(deck) {
 let finalDeck = []
 function shuffleAllCards() {
     if (activeAncient === undefined) { 
-        alert('Choose your ancient!');
+        alert('Choose the Ancient!');
         return; 
     } else if (difficulty === undefined) {
-        alert('Choose difficulty!');
+        alert('Choose the difficulty!');
         return;
     }
 
@@ -130,125 +130,91 @@ function shuffleAllCards() {
     const requiredBrownCarsNum = ancient.firstStage.brownCards + ancient.secondStage.brownCards + ancient.thirdStage.brownCards;
     const requiredBlueCardsNum = ancient.firstStage.blueCards + ancient.secondStage.blueCards + ancient.thirdStage.blueCards;
 
-    if (difficulty === 'medium') {
-        mediumShuffle(unshuffledGreenCards);
-        mediumShuffle(unshuffledBrownCards);
-        mediumShuffle(unshuffledBlueCards);
-        shuffledGreenCards = [...unshuffledGreenCards];
-        shuffledBrownCards = [...unshuffledBrownCards];
-        shuffledBlueCards = [...unshuffledBlueCards];
-    } else if(difficulty === 'very easy') {
-        //перемешать зеленые карты
-        mediumShuffle(unshuffledGreenCards);
-        for (let i = 0; i < unshuffledGreenCards.length; i++) {
-            unshuffledGreenCards[i].difficulty === 'easy' ? shuffledGreenCards.push(unshuffledGreenCards[i]) : false;
+    function checkShortageOfCards(color, unshuffledDeck, shuffledDeck) {
+        let shortage;
+        if (color === 'green') {
+            shortage = requiredGreenCardsNum - shuffledGreenCards.length;
+            unshuffledDeck = unshuffledGreenCards;
+            shuffledDeck = shuffledGreenCards;
+        } else if (color === 'brown') {
+            shortage = requiredBrownCarsNum - shuffledBrownCards.length;
+            unshuffledDeck = unshuffledBrownCards;
+            shuffledDeck = shuffledBrownCards;
+        } else if (color === 'blue') {
+            shortage = requiredBlueCardsNum - shuffledBlueCards.length;
+            unshuffledDeck = unshuffledBlueCards;
+            shuffledDeck = shuffledBlueCards;
         }
-        if (shuffledGreenCards.length < requiredGreenCardsNum) { //проверяем хватает ли легких карт или требуется добрать обычных
-            let shortage = requiredGreenCardsNum - shuffledGreenCards.length;
-            for (let i = 0; i < unshuffledGreenCards.length && shortage > 0; i++) {
-                if (unshuffledGreenCards[i].difficulty === 'normal') {
-                    shuffledGreenCards.push(unshuffledGreenCards[i]);
-                    shortage--;
-                } 
-            }
-        }
-       //перемешать коричневые карты;
-       mediumShuffle(unshuffledBrownCards);
-       for (let i = 0; i < unshuffledBrownCards.length; i++) {
-        unshuffledBrownCards[i].difficulty === 'easy' ? shuffledBrownCards.push(unshuffledBrownCards[i]) : false;
-       }
-       if (shuffledBrownCards.length < requiredBrownCarsNum) {
-        let shortage = requiredBrownCarsNum - shuffledBrownCards.length;
-        for (let i = 0; i < unshuffledBrownCards.length && shortage > 0; i++) {
-            if (unshuffledBrownCards[i].difficulty === 'normal') {
-                shuffledBrownCards.push(unshuffledBrownCards[i]);
+        for (let i = 0; i < unshuffledDeck.length && shortage > 0; i++) {
+            if (unshuffledDeck[i].difficulty === 'normal') {
+                shuffledDeck.push(unshuffledDeck[i]);
                 shortage--;
-            }
-        }
-       }
-       // перемешать синие карты
-       mediumShuffle(unshuffledBlueCards);
-       for (let i = 0; i < unshuffledBlueCards.length; i++) {
-        unshuffledBlueCards[i].difficulty === 'easy' ? shuffledBlueCards.push(unshuffledBlueCards[i]) : false;
-       }
-       if (shuffledBlueCards.length < requiredBlueCardsNum) {
-        let shortage = requiredBlueCardsNum - shuffledBlueCards.length;
-        for (let i = 0; i < unshuffledBlueCards.length && shortage > 0; i++) {
-            if (unshuffledBlueCards[i].difficulty === 'normal') {
-                shuffledBlueCards.push(unshuffledBlueCards[i]);
-                shortage--;
-            }
-        }
-       }
-    } else if (difficulty === 'easy') {
-        mediumShuffle(unshuffledGreenCards);
-        for (let i = 0; i < unshuffledGreenCards.length; i++) {
-            unshuffledGreenCards[i].difficulty !== 'hard' ? shuffledGreenCards.push(unshuffledGreenCards[i]) : false;
-        };
-        mediumShuffle(unshuffledBrownCards);
-        for (let i = 0; i < unshuffledBrownCards.length; i++) {
-            unshuffledBrownCards[i].difficulty !== 'hard' ? shuffledBrownCards.push(unshuffledBrownCards[i]) : false;
-        };
-        mediumShuffle(unshuffledBlueCards);
-        for (let i = 0; i < unshuffledBlueCards.length; i++) {
-            unshuffledBlueCards[i].difficulty !== 'hard' ? shuffledBlueCards.push(unshuffledBlueCards[i]) : false;
-        }
-    } else if (difficulty === 'hard') {
-        mediumShuffle(unshuffledGreenCards);
-        for (let i = 0; i < unshuffledGreenCards.length; i++) {
-            unshuffledGreenCards[i].difficulty !== 'easy' ? shuffledGreenCards.push(unshuffledGreenCards[i]) : false;
-        };
-        mediumShuffle(unshuffledBrownCards);
-        for (let i = 0; i < unshuffledBrownCards.length; i++) {
-            unshuffledBrownCards[i].difficulty !== 'easy' ? shuffledBrownCards.push(unshuffledBrownCards[i]) : false;
-        };
-        mediumShuffle(unshuffledBlueCards);
-        for (let i = 0; i < unshuffledBlueCards.length; i++) {
-            unshuffledBlueCards[i].difficulty !== 'easy' ? shuffledBlueCards.push(unshuffledBlueCards[i]) : false;
-        }
-    } else if (difficulty === 'very hard') {
-       mediumShuffle(unshuffledGreenCards);
-       for (let i = 0; i < unshuffledGreenCards.length; i++) {
-            unshuffledGreenCards[i].difficulty === 'hard' ? shuffledGreenCards.push(unshuffledGreenCards[i]) : false;
-       } 
-       if (shuffledGreenCards.length < requiredGreenCardsNum) { //проверяем хватает ли легких карт или требуется добрать обычных
-            let shortage = requiredGreenCardsNum - shuffledGreenCards.length;
-            for (let i = 0; i < unshuffledGreenCards.length && shortage > 0; i++) {
-                if (unshuffledGreenCards[i].difficulty === 'normal') {
-                    shuffledGreenCards.push(unshuffledGreenCards[i]);
-                    shortage--;
-                } 
-            }
-        }
-        mediumShuffle(unshuffledBlueCards);
-        for (let i = 0; i < unshuffledBrownCards.length; i++) {
-            unshuffledBrownCards[i].difficulty === 'hard' ? shuffledBrownCards.push(unshuffledBrownCards[i]) : false;
-        }
-        if (shuffledBrownCards.length < requiredBrownCarsNum) {
-            let shortage = requiredBrownCarsNum - shuffledBrownCards.length;
-            for (let i = 0; i < unshuffledBrownCards.length && shortage > 0; i++) {
-                if (unshuffledBrownCards[i].difficulty === 'normal') {
-                    shuffledBrownCards.push(unshuffledBrownCards[i]);
-                    shortage--;
-                }
-            }
-        }
-        mediumShuffle(unshuffledBlueCards);
-        for (let i = 0; i < unshuffledBlueCards.length; i++) {
-            unshuffledBlueCards[i].difficulty === 'hard' ? shuffledBlueCards.push(unshuffledBlueCards[i]) : false;
-        }
-        if (shuffledBlueCards.length < requiredBlueCardsNum) {
-            let shortage = requiredBlueCardsNum - shuffledBlueCards.length;
-            for (let i = 0; i < unshuffledBlueCards.length && shortage > 0; i++) {
-                if (unshuffledBlueCards[i].difficulty === 'normal') {
-                    shuffledBlueCards.push(unshuffledBlueCards[i]);
-                    shortage--;
-                }
             }
         }
     }
 
+    shuffle(unshuffledGreenCards);
+    shuffle(unshuffledBrownCards);
+    shuffle(unshuffledBlueCards);
+
+    if (difficulty === 'medium') {
+        shuffledGreenCards = [...unshuffledGreenCards];
+        shuffledBrownCards = [...unshuffledBrownCards];
+        shuffledBlueCards = [...unshuffledBlueCards];
+    } else if(difficulty === 'very easy') {
+        for (let i = 0; i < unshuffledGreenCards.length; i++) {
+            unshuffledGreenCards[i].difficulty === 'easy' ? shuffledGreenCards.push(unshuffledGreenCards[i]) : false;
+        }
+        checkShortageOfCards('green', unshuffledGreenCards, shuffledGreenCards);
+       for (let i = 0; i < unshuffledBrownCards.length; i++) {
+        unshuffledBrownCards[i].difficulty === 'easy' ? shuffledBrownCards.push(unshuffledBrownCards[i]) : false;
+       }
+       checkShortageOfCards('brown', unshuffledBrownCards, shuffledBrownCards);
+       for (let i = 0; i < unshuffledBlueCards.length; i++) {
+        unshuffledBlueCards[i].difficulty === 'easy' ? shuffledBlueCards.push(unshuffledBlueCards[i]) : false;
+       }
+       checkShortageOfCards('blue', unshuffledBlueCards, shuffledBlueCards);
+    } else if (difficulty === 'easy') {
+        for (let i = 0; i < unshuffledGreenCards.length; i++) {
+            unshuffledGreenCards[i].difficulty !== 'hard' ? shuffledGreenCards.push(unshuffledGreenCards[i]) : false;
+        };
+        for (let i = 0; i < unshuffledBrownCards.length; i++) {
+            unshuffledBrownCards[i].difficulty !== 'hard' ? shuffledBrownCards.push(unshuffledBrownCards[i]) : false;
+        };
+        for (let i = 0; i < unshuffledBlueCards.length; i++) {
+            unshuffledBlueCards[i].difficulty !== 'hard' ? shuffledBlueCards.push(unshuffledBlueCards[i]) : false;
+        }
+    } else if (difficulty === 'hard') {
+        for (let i = 0; i < unshuffledGreenCards.length; i++) {
+            unshuffledGreenCards[i].difficulty !== 'easy' ? shuffledGreenCards.push(unshuffledGreenCards[i]) : false;
+        };
+        for (let i = 0; i < unshuffledBrownCards.length; i++) {
+            unshuffledBrownCards[i].difficulty !== 'easy' ? shuffledBrownCards.push(unshuffledBrownCards[i]) : false;
+        };
+        for (let i = 0; i < unshuffledBlueCards.length; i++) {
+            unshuffledBlueCards[i].difficulty !== 'easy' ? shuffledBlueCards.push(unshuffledBlueCards[i]) : false;
+        }
+    } else if (difficulty === 'very hard') {
+       for (let i = 0; i < unshuffledGreenCards.length; i++) {
+            unshuffledGreenCards[i].difficulty === 'hard' ? shuffledGreenCards.push(unshuffledGreenCards[i]) : false;
+       } 
+        checkShortageOfCards('green', unshuffledGreenCards, shuffledGreenCards);
+        for (let i = 0; i < unshuffledBrownCards.length; i++) {
+            unshuffledBrownCards[i].difficulty === 'hard' ? shuffledBrownCards.push(unshuffledBrownCards[i]) : false;
+        }
+        checkShortageOfCards('brown', unshuffledBrownCards, shuffledBrownCards);
+        for (let i = 0; i < unshuffledBlueCards.length; i++) {
+            unshuffledBlueCards[i].difficulty === 'hard' ? shuffledBlueCards.push(unshuffledBlueCards[i]) : false;
+        }
+        checkShortageOfCards('blue', unshuffledBlueCards, shuffledBlueCards);
+    }
+
     //начало первого этапа тасовки
+    const counter = document.querySelector('.counter');
+    const stageOneCounter = counter.children[0];
+    const stageTwoCounter = counter.children[1];
+    const stageThreeCounter = counter.children[2];
+    
     for (let i = 0; i < ancient.firstStage.greenCards; i++) {
         stageOneDecks.push(shuffledGreenCards[0]);
         shuffledGreenCards.shift();
@@ -262,16 +228,11 @@ function shuffleAllCards() {
         shuffledBlueCards.shift();
     }
 
-    const counter = document.querySelector('.counter');
-    const stageOneCounter = counter.children[0];
-    const stageTwoCounter = counter.children[1];
-    const stageThreeCounter = counter.children[2];
-
     stageOneCounter.children[1].textContent = ancient.firstStage.greenCards;
     stageOneCounter.children[2].textContent = ancient.firstStage.brownCards;
     stageOneCounter.children[3].textContent = ancient.firstStage.blueCards;
 
-    mediumShuffle(stageOneDecks);
+    shuffle(stageOneDecks);
     //окончание первого этапа и начало второго этапа
     for (let i = 0; i < ancient.secondStage.greenCards; i++) {
         stageTwoDecks.push(shuffledGreenCards[0]);
@@ -290,7 +251,7 @@ function shuffleAllCards() {
     stageTwoCounter.children[2].textContent = ancient.secondStage.brownCards;
     stageTwoCounter.children[3].textContent = ancient.secondStage.blueCards;
 
-    mediumShuffle(stageTwoDecks);
+    shuffle(stageTwoDecks);
     //окончание второго этапа и начало третьего этапа
     for (let i = 0; i < ancient.thirdStage.greenCards; i++) {
         stageThreeDecks.push(shuffledGreenCards[0]);
@@ -309,7 +270,7 @@ function shuffleAllCards() {
     stageThreeCounter.children[2].textContent = ancient.thirdStage.brownCards;
     stageThreeCounter.children[3].textContent = ancient.thirdStage.blueCards;
 
-    mediumShuffle(stageThreeDecks);
+    shuffle(stageThreeDecks);
 
     finalDeck.push(stageOneDecks);
     finalDeck.push(stageTwoDecks);
@@ -317,9 +278,12 @@ function shuffleAllCards() {
 
     const stageOneHeader = document.querySelector('.counter__stage1').children[0];
     stageOneHeader.classList.add('stage-header--active');
+
     const counter1 = document.querySelector('.counter__stage1');
     counter1.classList.add('counter__stage1--active');
+
     deckBg.classList.add('deck-background--active');
+    
     shuffleBtn.classList.remove('shuffle-button--active');
     shuffleBtn.removeEventListener('click', shuffleAllCards);   
     shuffleBtn.remove();
@@ -340,9 +304,10 @@ function withdrawCard() {
     if (finalDeck.length !== 0) { 
         if (finalDeck[0].length > 0) { //проверка длины деки для stage1
             openedCards.style.backgroundImage = `url(${finalDeck[0][0].url})`;
-            finalDeck[0][0].color === 'green' ? counter1.children[1].textContent = Number(counter1.children[1].textContent) - 1 : false;
-            finalDeck[0][0].color === 'brown'? counter1.children[2].textContent = Number(counter1.children[2].textContent) - 1 : false;
-            finalDeck[0][0].color === 'blue' ? counter1.children[3].textContent = Number(counter1.children[3].textContent) - 1 : false;
+            finalDeck[0][0].color === 'green' ? counter1.children[1].textContent = Number(counter1.children[1].textContent) - 1 
+            : finalDeck[0][0].color === 'brown'? counter1.children[2].textContent = Number(counter1.children[2].textContent) - 1 
+            : finalDeck[0][0].color === 'blue' ? counter1.children[3].textContent = Number(counter1.children[3].textContent) - 1 
+            : false;
             finalDeck[0].shift();
         } else if (finalDeck[0].length === 0 && finalDeck[1].length > 0) { //проверка длины деки для stage2
             stageOneHeader.classList.contains('stage-header--active') ? stageOneHeader.classList.remove('stage-header--active') : false;
@@ -350,9 +315,10 @@ function withdrawCard() {
             counter1.classList.remove('counter__stage1--active');
             counter2.classList.add('counter__stage2--active');
             openedCards.style.backgroundImage = `url(${finalDeck[1][0].url})`;
-            finalDeck[1][0].color === 'green' ? counter2.children[1].textContent = Number(counter2.children[1].textContent) - 1 : false;
-            finalDeck[1][0].color === 'brown' ? counter2.children[2].textContent = Number(counter2.children[2].textContent) - 1 : false;
-            finalDeck[1][0].color === 'blue' ? counter2.children[3].textContent = Number(counter2.children[3].textContent) - 1 : false;
+            finalDeck[1][0].color === 'green' ? counter2.children[1].textContent = Number(counter2.children[1].textContent) - 1 
+            : finalDeck[1][0].color === 'brown' ? counter2.children[2].textContent = Number(counter2.children[2].textContent) - 1 
+            : finalDeck[1][0].color === 'blue' ? counter2.children[3].textContent = Number(counter2.children[3].textContent) - 1 
+            : false;
             finalDeck[1].shift();
         } else if (finalDeck[1].length === 0 && finalDeck[2].length > 0) {
             stageTwoHeader.classList.contains('stage-header--active') ? stageTwoHeader.classList.remove('stage-header--active') : false;
@@ -360,9 +326,10 @@ function withdrawCard() {
             counter2.classList.remove('counter__stage2--active');
             counter3.classList.add('counter__stage3--active');
             openedCards.style.backgroundImage = `url(${finalDeck[2][0].url})`;
-            finalDeck[2][0].color === 'green' ? counter3.children[1].textContent = Number(counter3.children[1].textContent) - 1 : false;
-            finalDeck[2][0].color === 'brown' ? counter3.children[2].textContent = Number(counter3.children[2].textContent) - 1 : false;
-            finalDeck[2][0].color === 'blue' ? counter3.children[3].textContent = Number(counter3.children[3].textContent) - 1 : false;
+            finalDeck[2][0].color === 'green' ? counter3.children[1].textContent = Number(counter3.children[1].textContent) - 1 
+            : finalDeck[2][0].color === 'brown' ? counter3.children[2].textContent = Number(counter3.children[2].textContent) - 1 
+            : finalDeck[2][0].color === 'blue' ? counter3.children[3].textContent = Number(counter3.children[3].textContent) - 1 
+            : false;
             finalDeck[2].shift();
         }
         if (finalDeck[2].length === 0) {
